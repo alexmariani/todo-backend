@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { AuthService } from 'src/auth/services/auth/auth.service';
@@ -18,7 +18,7 @@ export class AuthController {
     @ApiResponse({ status: 404, description: 'Non trovato' })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     @ApiResponse({ status: 500, description: 'Errore non previsto' })
-    login(@Body() user: PostUserDto) {
+    public login(@Body() user: PostUserDto) {
         return this.authService.signIn(user)
     }
 
@@ -30,7 +30,7 @@ export class AuthController {
     @ApiResponse({ status: 404, description: 'Non trovato' })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     @ApiResponse({ status: 500, description: 'Errore non previsto' })
-    register(@Body() user: PostUserDto) {
+    public register(@Body() user: PostUserDto) {
         return this.authService.register(user)
     }
 

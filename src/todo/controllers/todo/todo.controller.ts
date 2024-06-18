@@ -47,7 +47,7 @@ export class TodoController {
 
     @Put(':id')
     @ApiOperation({ summary: 'Modifica un todo ' })
-    @ApiResponse({ status: 200, description: 'Todo modificato con successo' })
+    @ApiResponse({ status: 204, description: 'Todo modificato con successo' })
     @ApiResponse({ status: 400, description: "Richiesta mal formata" })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     @ApiResponse({ status: 404, description: 'Non trovato' })
@@ -58,7 +58,7 @@ export class TodoController {
 
     @Post()
     @ApiOperation({ summary: 'Inserisce un todo' })
-    @ApiResponse({ status: 200, description: 'Todo aggiunto con successo' })
+    @ApiResponse({ status: 201, description: 'Todo aggiunto con successo' })
     @ApiResponse({ status: 400, description: "Richiesta mal formata" })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     @ApiResponse({ status: 404, description: 'Non trovato' })
