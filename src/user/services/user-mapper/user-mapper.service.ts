@@ -4,7 +4,7 @@ import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class UserMapperService {
-    public modelToDto({ id, password, username }: User): UserDto {
-        return new UserDto({ id, username, password });
-    }
+  public modelToDto({ id, password, username }: User): UserDto {
+    return new UserDto({ id, username, password });
+  }
 }

@@ -24,12 +24,17 @@ import { AuthModule } from './auth/auth.module';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     TodoModule,
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController, UserController],
-  providers: [AppService, UserService, UserMapperService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  providers: [
+    AppService,
+    UserService,
+    UserMapperService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

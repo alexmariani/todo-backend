@@ -8,17 +8,17 @@ import { AuthController } from './controllers/auth/auth.controller';
 import { AuthService } from './services/auth/auth.service';
 
 @Module({
-    imports: [
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.register({
-            global: true,
-            secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60s' },
-        }),
-        UserModule,
-    ],
-    providers: [JwtStrategy, AuthService],
-    exports: [JwtModule, PassportModule],
-    controllers: [AuthController]
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
+    UserModule,
+  ],
+  providers: [JwtStrategy, AuthService],
+  exports: [JwtModule, PassportModule],
+  controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}

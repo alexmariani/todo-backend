@@ -6,21 +6,23 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
-  app.useGlobalPipes(new ValidationPipe({
-    exceptionFactory: (errors) => {
-      const formattedErrors = errors.map(error => ({
-        property: error.property,
-        constraints: Object.keys(error.constraints).map(key => error.constraints[key]),
-      }));
-      return new BadRequestException(formattedErrors);
-    },
-    transform: true,
-    whitelist: true
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const formattedErrors = errors.map((error) => ({
+          property: error.property,
+          constraints: Object.keys(error.constraints).map(
+            (key) => error.constraints[key],
+          ),
+        }));
+        return new BadRequestException(formattedErrors);
+      },
+      transform: true,
+      whitelist: true,
+    }),
+  );
 
   app.enableCors();
-
 
   const config = new DocumentBuilder()
     .setTitle('Todo example')

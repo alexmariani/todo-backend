@@ -7,8 +7,8 @@ import { TodoController } from './controllers/todo/todo.controller';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Todo]), AuthModule],
-    providers: [TodoService, TodoMapperService],
-    controllers: [TodoController]
+  imports: [TypeOrmModule.forFeature([Todo]), AuthModule],
+  providers: [TodoService, TodoMapperService],
+  controllers: [TodoController],
 })
-export class TodoModule { }
+export class TodoModule {}
