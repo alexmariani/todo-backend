@@ -1,7 +1,6 @@
 import { Controller, Delete, Get, Param, Res } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
-import { Public } from 'src/auth/decorators/public.decorator';
 import { UserService } from 'src/user/services/user/user.service';
 
 @Controller('users')
