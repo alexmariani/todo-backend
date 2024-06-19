@@ -1,5 +1,6 @@
 export const italianValidationMessages = {
   isString: 'Il campo $property deve essere una stringa',
+  isNumber: 'Il campo $property deve essere un numero',
   isNotEmpty: 'Il campo $property non può essere vuoto',
   isEmail: 'Il campo $property deve essere un indirizzo email valido',
   minLength:

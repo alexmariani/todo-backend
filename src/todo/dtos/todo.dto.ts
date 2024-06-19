@@ -7,6 +7,8 @@ export class TodoDto {
   public readonly title: string;
   @ApiProperty()
   public readonly completed: boolean;
+  @ApiProperty()
+  public readonly userId: number;
 
   public constructor(opts?: Partial<TodoDto>) {
     Object.assign(this, opts);

@@ -20,7 +20,17 @@ export class UserService {
 
   public async findOne(username: string): Promise<UserDto> {
     const user = await this.userRepository.findOne({
-      where: { username: username },
+      where: { username },
+    });
+    if ([null, undefined].includes(user)) {
+      return null;
+    }
+    return this.userMapper.modelToDto(user);
+  }
+
+  public async findOneById(id: number): Promise<UserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id },
     });
     if ([null, undefined].includes(user)) {
       return null;
@@ -41,7 +51,7 @@ export class UserService {
       },
     });
 
-    if (user == null || user == undefined) throw new NotFoundException();
+    if (!user) throw new NotFoundException('Utente non trovato');
 
     user.username = username;
     user.password = password;
@@ -54,7 +64,7 @@ export class UserService {
   public async remove(id: number): Promise<User> {
     let user = await this.userRepository.findOne({ where: { id } });
 
-    if (user == null || user == undefined) throw new NotFoundException();
+    if (!user) throw new NotFoundException('Utente non trovato');
 
     user = await this.userRepository.remove(user);
 

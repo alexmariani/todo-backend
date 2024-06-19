@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Todo } from 'src/todo/entities';
 
 @Entity()
 export class User {
@@ -11,6 +19,10 @@ export class User {
 
   @Column()
   public password: string;
+
+  @OneToOne(() => Todo, (todo) => todo.user)
+  @JoinColumn()
+  todo: Todo;
 
   @BeforeInsert()
   async hashPassword() {

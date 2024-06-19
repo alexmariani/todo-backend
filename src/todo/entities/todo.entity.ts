@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Todo {
@@ -11,8 +12,12 @@ export class Todo {
   @Column()
   public completed: boolean;
 
-  public constructor(title: string) {
+  @OneToOne(() => User, (user) => user.todo)
+  public readonly user: number;
+
+  public constructor(title: string, user: number) {
     this.title = title;
     this.completed = false;
+    this.user = user;
   }
 }

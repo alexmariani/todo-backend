@@ -9,24 +9,18 @@ import { UserService } from 'src/user/services/user/user.service';
 
 @Injectable()
 export class AuthService {
-  private jwtOptions: { secret: string; verify: { algorithms: string[] } };
-
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
-  ) {
-    this.jwtOptions = {
-      secret: 'secretKey',
-
-      verify: { algorithms: ['HS256'] },
-    };
-  }
+  ) {}
 
   async signIn(loginUser: PostUserDto): Promise<{ access_token: string }> {
     const user = await this.userService.findOne(loginUser.username);
-    console.info(user);
+
     if (!user || !(await user.checkPassword(loginUser.password))) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'Utente non censito o credenziali non corrette',
+      );
     }
     const payload = { sub: user.id, username: user.username };
     return {
@@ -38,7 +32,7 @@ export class AuthService {
     let user = await this.userService.findOne(registerUser.username);
     console.info(user);
     if (user != null || user != undefined) {
-      throw new ConflictException();
+      throw new ConflictException('Utente già presente nel sistema');
     }
 
     user = await this.userService.add(registerUser);
