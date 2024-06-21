@@ -6,9 +6,10 @@ import { TodoMapperService } from './services/todo-mapper/todo-mapper.service';
 import { TodoController } from './controllers/todo/todo.controller';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from 'src/user/user.module';
+import { File } from './entities/file.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Todo]), AuthModule, UserModule],
+  imports: [TypeOrmModule.forFeature([Todo, File]), AuthModule, UserModule],
   providers: [TodoService, TodoMapperService],
   controllers: [TodoController],
 })

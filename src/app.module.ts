@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TodoModule } from './todo/todo.module';
+import { APP_GUARD } from '@nestjs/core';
+import { PassportModule } from '@nestjs/passport';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'path';
-import { PassportModule } from '@nestjs/passport';
-import { UserController } from './user/controllers/user/user.controller';
-import { UserService } from './user/services/user/user.service';
-import { UserMapperService } from './user/services/user-mapper/user-mapper.service';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/guards/auth.guard';
-import { UserModule } from './user/user.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { TodoModule } from './todo/todo.module';
+import { UserController } from './user/controllers/user/user.controller';
+import { UserMapperService } from './user/services/user-mapper/user-mapper.service';
+import { UserService } from './user/services/user/user.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +26,10 @@ import { AuthModule } from './auth/auth.module';
     TodoModule,
     UserModule,
     AuthModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads', // URL di base per servire i file
+    }),
   ],
   controllers: [AppController, UserController],
   providers: [
