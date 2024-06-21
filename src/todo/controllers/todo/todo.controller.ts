@@ -162,8 +162,10 @@ export class TodoController {
     const file = await this.todoService.findFile(idFile);
     const filePath = path.join(process.cwd(), 'uploads', file.fileName);
     response.download(filePath, file.fileName, (err) => {
-      console.info(err);
-      err && response.status(404).json({ message: 'File non trovato' });
+      if (err) {
+        console.error(err);
+        response.status(404).json({ message: 'File non trovato' });
+      }
     });
   }
 }
