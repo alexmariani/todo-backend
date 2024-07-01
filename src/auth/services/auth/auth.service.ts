@@ -16,7 +16,6 @@ export class AuthService {
 
   async signIn(loginUser: PostUserDto): Promise<{ access_token: string }> {
     const user = await this.userService.findOne(loginUser.username);
-
     if (!user || !(await user.checkPassword(loginUser.password))) {
       throw new UnauthorizedException(
         'Utente non censito o credenziali non corrette',
@@ -30,14 +29,9 @@ export class AuthService {
 
   async register(registerUser: PostUserDto): Promise<{ access_token: string }> {
     let user = await this.userService.findOne(registerUser.username);
-    console.info(user);
-    if (user != null || user != undefined) {
-      throw new ConflictException('Utente già presente nel sistema');
-    }
-
+    if (!user) throw new ConflictException('Utente già presente nel sistema');
     user = await this.userService.add(registerUser);
     const payload = { sub: user.id, username: user.username };
-
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

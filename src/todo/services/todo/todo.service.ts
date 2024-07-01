@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { TodoMapperService } from '../todo-mapper/todo-mapper.service';
 import { File } from 'src/todo/entities/file.entity';
 import { FileUploadDto } from 'src/todo/dtos/file-upload.dto';
+import { unlink } from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class TodoService {
@@ -104,5 +106,18 @@ export class TodoService {
     });
     if (!file) throw new NotFoundException('Il file non è stato trovato');
     return file;
+  }
+
+  public async deleteFile(idFile: number): Promise<void> {
+    const file = await this.fileRepositoty.findOne({ where: { id: idFile } });
+    const filePath = path.join(process.cwd(), 'uploads', file.fileName);
+    if (!file) throw new NotFoundException('File non esistente');
+    unlink(filePath, async (err) => {
+      if (err) {
+        console.error('File non trovato');
+        return;
+      }
+      await this.fileRepositoty.delete({ id: idFile });
+    });
   }
 }

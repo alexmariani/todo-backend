@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -107,7 +108,11 @@ export class TodoController {
       }),
       fileFilter: (_, file, cb) => {
         if (!file.originalname.match(/\.(pdf)$/)) {
-          return cb(new Error('Only pdf files are allowed!'), false);
+          console.info(file.originalname);
+          return cb(
+            new BadRequestException('Only PDF files are allowed!'),
+            false,
+          );
         }
         cb(null, true);
       },
@@ -143,6 +148,7 @@ export class TodoController {
     @UploadedFiles() files: Express.Multer.File[],
     @Param('id') id: number,
   ) {
+    if (files.length == 0) return new BadRequestException('File non presenti');
     return this.todoService.addFiles(id, new FileUploadDto(files));
   }
 
@@ -167,5 +173,25 @@ export class TodoController {
         response.status(404).json({ message: 'File non trovato' });
       }
     });
+  }
+
+  @Delete('/file/:idFile')
+  @ApiOperation({
+    summary: "Permette di eliminare un file specificandone l'id",
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Eliminazione avvenuta con successo',
+  })
+  @ApiResponse({ status: 400, description: 'Richiesta mal formata' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Non trovato' })
+  @ApiResponse({ status: 500, description: 'Errore non previsto' })
+  public async rimuoviFile(
+    @Param('idFile') idFile: number,
+    @Res() response: Response,
+  ) {
+    await this.todoService.deleteFile(idFile);
+    response.status(204).json({ message: 'File eliminato con successo' });
   }
 }

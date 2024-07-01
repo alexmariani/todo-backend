@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { UserController } from './user/controllers/user/user.controller';
 import { UserMapperService } from './user/services/user-mapper/user-mapper.service';
 import { UserService } from './user/services/user/user.service';
 import { UserModule } from './user/user.module';
+import { HttpExceptionFilter } from './filters/exception.filter';
 
 @Module({
   imports: [
@@ -39,6 +40,10 @@ import { UserModule } from './user/user.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
   ],
 })
