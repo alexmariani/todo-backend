@@ -23,7 +23,6 @@ export class TodoService {
     const todos = await this.todoRepository.find({
       relations: ['files', 'user'],
     });
-    console.info(todos);
     return todos.map(this.todoMapper.modelToDto);
   }
 
@@ -33,8 +32,7 @@ export class TodoService {
       relations: ['files', 'user'],
     });
 
-    if (todo == null || todo == undefined)
-      throw new NotFoundException('Todo non trovato');
+    if (!todo) throw new NotFoundException('Todo non trovato');
     return this.todoMapper.modelToDto(todo);
   }
 
@@ -88,8 +86,10 @@ export class TodoService {
       relations: ['files'],
     });
 
+    const { files: filesToShow } = files;
+
     const returnedFiles = Promise.all(
-      files.files.map(async (file) => {
+      filesToShow.map(async (file) => {
         const createdFile = new File(file.filename, todo);
         await this.fileRepositoty.insert(createdFile);
         return createdFile;
@@ -102,7 +102,6 @@ export class TodoService {
     const file = await this.fileRepositoty.findOne({
       where: { id: idFile },
     });
-    console.info(file);
     if (!file) throw new NotFoundException('Il file non è stato trovato');
     return file;
   }
