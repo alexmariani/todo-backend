@@ -146,7 +146,7 @@ export class TodoController {
     return this.todoService.addFiles(id, new FileUploadDto(files));
   }
 
-  @Get('/file/:idFile')
+  @Get('/file/:id')
   @ApiOperation({
     summary: "Permette di scaricare un file specificandone l'id",
   })
@@ -156,7 +156,7 @@ export class TodoController {
   @ApiResponse({ status: 404, description: 'Non trovato' })
   @ApiResponse({ status: 500, description: 'Errore non previsto' })
   public async downloadFile(
-    @Param('idFile') idFile: number,
+    @Param('id') idFile: number,
     @Res() response: Response,
   ) {
     const file = await this.todoService.findFile(idFile);
