@@ -22,7 +22,9 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { username },
     });
-    if (!user) throw new NotFoundException('Utente non trovato');
+    if ([null, undefined].includes(user)) {
+      return null;
+    }
     return this.userMapper.modelToDto(user);
   }
 
@@ -30,7 +32,9 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { id },
     });
-    if (!user) throw new NotFoundException('Utente non trovato');
+    if ([null, undefined].includes(user)) {
+      return null;
+    }
     return this.userMapper.modelToDto(user);
   }
 

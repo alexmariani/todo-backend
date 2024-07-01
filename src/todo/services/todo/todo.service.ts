@@ -39,7 +39,9 @@ export class TodoService {
   public async add({ title, userId }: AddTodoDto): Promise<TodoDto> {
     const owner = await this.userRepository.findOne({ where: { id: userId } });
 
-    if (!owner) throw new NotFoundException('Utente proprietario non trovato');
+    if (!owner) {
+      throw new NotFoundException('Utente proprietario non trovato');
+    }
 
     let todo = new Todo(title, owner, []);
     todo = await this.todoRepository.save(todo);

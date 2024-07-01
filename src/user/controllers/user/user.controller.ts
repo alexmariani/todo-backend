@@ -1,16 +1,10 @@
 import { Controller, Delete, Get, Param, Res } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { UserService } from 'src/user/services/user/user.service';
 
 @Controller('users')
 @ApiTags('User')
-@ApiBearerAuth()
 export class UserController {
   constructor(private userService: UserService) {}
 
