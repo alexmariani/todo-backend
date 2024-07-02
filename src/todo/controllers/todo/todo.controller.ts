@@ -120,8 +120,7 @@ export class TodoController {
   )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Lista allegati da collegare al todo',
-    type: 'multipart/form-data',
+    required: true,
     schema: {
       type: 'object',
       properties: {
