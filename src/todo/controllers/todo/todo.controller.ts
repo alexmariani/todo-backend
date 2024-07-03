@@ -21,6 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Response } from 'express';
+import { readFileSync } from 'fs';
 import { diskStorage } from 'multer';
 import * as path from 'path';
 import { AddTodoDto } from 'src/todo/dtos/add-todo.dto';
@@ -151,7 +152,7 @@ export class TodoController {
     return this.todoService.addFiles(id, new FileUploadDto(files));
   }
 
-  @Get('/file/:idFile')
+  @Post('/file/:idFile/download')
   @ApiOperation({
     summary: "Permette di scaricare un file specificandone l'id",
   })
@@ -160,18 +161,14 @@ export class TodoController {
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @ApiResponse({ status: 404, description: 'Non trovato' })
   @ApiResponse({ status: 500, description: 'Errore non previsto' })
-  public async downloadFile(
-    @Param('idFile') idFile: number,
-    @Res() response: Response,
-  ) {
+  public async downloadFile(@Param('idFile') idFile: number) {
     const file = await this.todoService.findFile(idFile);
     const filePath = path.join(process.cwd(), 'uploads', file.fileName);
-    response.download(filePath, file.fileName, (err) => {
-      if (err) {
-        console.error(err);
-        response.status(404).json({ message: 'File non trovato' });
-      }
-    });
+    const fileContent = readFileSync(filePath, 'base64'); // Legge il file come Base64
+    return {
+      name: file.fileName,
+      content: fileContent,
+    };
   }
 
   @Delete('/file/:idFile')

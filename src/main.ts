@@ -24,6 +24,8 @@ async function bootstrap() {
 
   app.enableCors();
 
+  // Creazione swagger per l'interfaccia api con il FE
+
   const config = new DocumentBuilder()
     .setTitle('Todo example')
     .setDescription('The Todo API description')
@@ -33,6 +35,13 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  //Espone l'endpoint per il ritorno del json
+  app.use('/api-json', (_, res) => {
+    res.json(document);
+  });
+
+  //Fine swagger
 
   await app.listen(8080);
 }
